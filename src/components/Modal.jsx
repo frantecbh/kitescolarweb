@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { Loading } from './Loading'
 
-export const Modal = ({ isVisible, onClose, data, confirma }) => {
-  const [pontoEntrega, setPontoEntrega] = useState('')
+const options = [
+  { value: '', text: '--Informe o ponto de coleta--' },
+  { value: 'P4', text: 'Poratria 4' },
+  { value: 'P5', text: 'Portaria 5' },
+  { value: 'outro', text: 'Outro' },
+]
 
-  const options = [
-    { value: 'P4', label: 'Poratria 4' },
-    { value: 'P5', label: 'Portaria 5' },
-    { value: 'outro', label: 'Outro' },
-  ]
+export const Modal = ({ isVisible, onClose, data, confirma }) => {
+  const [pontoEntrega, setPontoEntrega] = useState(options[0].value)
 
   function handleConfirmation() {
-    console.log(data)
     if (pontoEntrega === '') {
       alert('informe o ponto de coleta')
       return false
@@ -90,18 +90,26 @@ export const Modal = ({ isVisible, onClose, data, confirma }) => {
               <select
                 id="pontoentrega"
                 className="bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                value={pontoEntrega}
                 onChange={(e) => setPontoEntrega(e.target.value)}
-                defaultValue=""
               >
-                <option value="" selected>
-                  Selecione ponto de entrega
-                </option>
                 {options.map((opt) => (
                   <option key={opt.value} value={opt.value}>
-                    {opt.label}
+                    {opt.text}
                   </option>
                 ))}
               </select>
+
+              {/* <select
+                value={pontoEntrega}
+                onChange={(e) => setPontoEntrega(e.target.value)}
+              >
+                {options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.text}
+                  </option>
+                ))}
+              </select> */}
             </div>
 
             <button
