@@ -1,23 +1,53 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../Context/AuthContext'
 
 import { useNavigate } from 'react-router-dom'
+import { setUserSession, validaUserSession } from '../Context/hooks/SessionUser'
 
 export const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
 
   const navigate = useNavigate()
+  const {  SingIn, user, setUser } = useContext(Context) 
 
-  const { authenticated, SingIn } = useContext(Context)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('') 
 
   function handleLogin() {
     SingIn(email, password)
+    
   }
 
-  if (authenticated) {
-    return navigate('/kit')
-  }
+  useEffect(() => {
+    if(user) {   
+
+     setUserSession(user.name);
+      return navigate('/kit') 
+          
+    }
+    
+  }, [user])
+
+
+  useEffect(() => {
+
+    const itemArmazenado = JSON.parse(sessionStorage.getItem('userLoged'));
+   // console.log(itemArmazenado);
+
+    if(itemArmazenado){
+     
+     setUser({name: itemArmazenado.name}) 
+      
+      return navigate('/kit') 
+    }
+ 
+
+
+  }, [])
+
+
+  
+  
+  
 
   return (
     <>

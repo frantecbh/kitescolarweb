@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Loading } from './Loading'
+
 
 const options = [
   { value: '', text: '--Informe o ponto de coleta--' },

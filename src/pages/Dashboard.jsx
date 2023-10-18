@@ -1,17 +1,30 @@
 import { MagnifyingGlass } from '@phosphor-icons/react'
 
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import { Loading } from '../components/Loading'
 import { Modal } from '../components/Modal'
 import { api } from '../services/api'
+import { LogOut } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Context } from '../Context/AuthContext'
+import { validaUserSession } from '../Context/hooks/SessionUser'
 
 export function Dashboard() {
+
+  const navigate = useNavigate()
+
+  const { SingOut, user, setUser } = useContext(Context)
+
+
+
   const [matricula, setMatricula] = useState('')
   const [beneficiarios, setBeneficiarios] = useState([])
   const [entrega, setEngrega] = useState()
   const [showModal, setShowModadal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+
 
   function sendConfirmcao(data) {
     setEngrega(data)
@@ -49,7 +62,7 @@ export function Dashboard() {
         {
           id: dados.id,
           PONTO_ENTREGA: dados.PONTO_ENTREGA,
-          ENTREGADOR: 'FRANCISCO MENEZES',
+          ENTREGADOR: user.name,
           STATUS: true,
         },
         {
@@ -74,6 +87,48 @@ export function Dashboard() {
     }
   }
 
+  useEffect(() => {
+
+    const itemArmazenado = JSON.parse(sessionStorage.getItem('userLoged'));
+
+  //  console.log(itemArmazenado)
+ 
+    if(itemArmazenado){
+
+      const result = validaUserSession()
+
+      console.log(result)
+
+      if(result === 'A chave não existe.' || result === "A chave expirou."){
+        return navigate('/') 
+      }else{
+
+        return navigate('/kit') 
+      }
+
+    }
+
+  }, [])
+
+  
+
+  useEffect(() => {     
+    const itemArmazenado = JSON.parse(sessionStorage.getItem('userLoged'));
+
+    if (!user || !itemArmazenado ) {
+      return navigate('/')
+    }
+  }, [user])
+
+
+
+
+
+
+
+
+
+
   return (
     <>
       <div className="bg-zinc-50 h-screen mx-auto w-full  flex items-center justify-center p-4 dark:bg-gray-700 ">
@@ -82,9 +137,16 @@ export function Dashboard() {
             <span className="lg:text-lg uppecase focus:ring-0 font-semibold text-sky-800">
               KIT ESCOLAR 2023
             </span>
+            <div className='flex gap-3 items-center'>
             <p className="text-zinc-500 font-semibold text-sm">
-              Entregador: <span>Francisco Menezes</span>
+              Entregador: <span>{user ? user.name : ''}</span>
             </p>
+            <button className='p-2' onClick={SingOut}>
+            <LogOut className='w-3 h-3 text-zinc-500 hover:text-zinc-400' />
+            </button>
+           
+            </div>
+         
           </div>
           <div className="w-full flex items-center bg-gray-50 pl-3 rounded-md gap-1 overflow-auto">
             <MagnifyingGlass size={24} color="#9ca3af" weight="bold" />
