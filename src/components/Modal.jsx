@@ -5,6 +5,7 @@ const options = [
   { value: '', text: '--Informe o ponto de coleta--' },
   { value: 'P4', text: 'Poratria 4' },
   { value: 'P5', text: 'Portaria 5' },
+  { value: 'P6', text: 'Portaria 6' },
   { value: 'outro', text: 'Outro' },
 ]
 

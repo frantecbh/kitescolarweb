@@ -11,7 +11,7 @@ export function setUserSession(userName){
  name = userName;
 
 // Defina o tempo de expiração em milissegundos (por exemplo, 30 minutos)
-const tempoExpiracao = 1 * 60 * 1000;
+const tempoExpiracao = 30 * 60 * 1000;
 
 // Obtenha a hora atual
 const agora = new Date().getTime();
